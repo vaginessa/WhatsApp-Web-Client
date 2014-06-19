@@ -13,3 +13,5 @@ You have to **set your DB config in /lib/user/profile.php**
 	  $user='';
 	  $pass='';
 ```
+
+**And you have to import /db/whatsapp.sql**

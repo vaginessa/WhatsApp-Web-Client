@@ -1,6 +1,5 @@
 <?php
 class User{
-	private $config='config.php';
 	public $notFound = "404.html";	
 	public $dbLink;
 

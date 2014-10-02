@@ -142,6 +142,19 @@ class WhatsProt
         if (!$phone = $this->dissectPhone()) {
             throw new Exception('The provided phone number is not valid.');
         }
+        
+         if ($countryCode == null && $phone['ISO3166'] != '') {
+            $countryCode = $phone['ISO3166'];
+        }
+        if ($countryCode == null) {
+            $countryCode = 'US';
+        }
+        if ($langCode == null && $phone['ISO639'] != '') {
+            $langCode = $phone['ISO639'];
+        }
+        if ($langCode == null) {
+            $langCode = 'en';
+        }
 
         // Build the url.
         $host = 'https://' . static::WHATSAPP_CHECK_HOST;
@@ -149,7 +162,8 @@ class WhatsProt
             'cc' => $phone['cc'],
             'in' => $phone['phone'],
             'id' => $this->identity,
-            'c' => 'cookie',
+            'lg' => $langCode,
+            'lc' => $countryCode,
         );
 
         $response = $this->getResponse($host, $query);
@@ -205,6 +219,19 @@ class WhatsProt
         if (!$phone = $this->dissectPhone()) {
             throw new Exception('The provided phone number is not valid.');
         }
+        
+         if ($countryCode == null && $phone['ISO3166'] != '') {
+            $countryCode = $phone['ISO3166'];
+        }
+        if ($countryCode == null) {
+            $countryCode = 'US';
+        }
+        if ($langCode == null && $phone['ISO639'] != '') {
+            $langCode = $phone['ISO639'];
+        }
+        if ($langCode == null) {
+            $langCode = 'en';
+        }
 
         // Build the url.
         $host = 'https://' . static::WHATSAPP_REGISTER_HOST;
@@ -213,7 +240,8 @@ class WhatsProt
             'in' => $phone['phone'],
             'id' => $this->identity,
             'code' => $code,
-            'c' => 'cookie',
+            'lg' => $langCode,
+            'lc' => $countryCode,
         );
 
         $response = $this->getResponse($host, $query);
@@ -297,12 +325,11 @@ class WhatsProt
         $query = array(
             'cc' => $phone['cc'],
             'in' => $phone['phone'],
-            'to' => $this->phoneNumber,
             'lg' => $langCode,
             'lc' => $countryCode,
             'method' => $method,
-            'mcc' => $phone['mcc'],
-            'mnc' => '001',
+            'sim_mcc' => '000',
+            'sim_mnc' => '000',
             'token' => urlencode($token),
             'id' => $this->identity,
         );
